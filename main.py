@@ -21,7 +21,7 @@ def main():
         if opcion == '1':
             nuevo_prestamista_address = input("Ingrese la dirección Ethereum del nuevo prestamista: ")
             alta_prestamista(nuevo_prestamista_address)
-        elif opcion == '2':ValueError: {'message': 'VM Exception while processing transaction: revert No estas registrado como cliente', 'stack': 'CallError: VM Exception while processing transaction: revert No estas registrado como cliente\n    at Blockchain.simulateTransaction (C:\\Program Files\\WindowsApps\\GanacheUI_2.7.1.0_x64__rb4352f0jd4m2\\app\\resources\\static\\node\\node_modules\\ganache\\dist\\node\\1.js:2:72658)', 'code': -32000, 'name': 'CallError', 'data': '0x08c379a0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000204e6f206573746173207265676973747261646f20636f6d6f20636c69656e7465'}
+        elif opcion == '2':
 
             nuevo_cliente_address = input("Ingrese la dirección Ethereum del nuevo cliente: ")
             prestamista_address = input("Ingrese la dirección Ethereum del prestamista que registra al cliente: ")
