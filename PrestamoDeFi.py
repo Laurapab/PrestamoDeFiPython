@@ -20,8 +20,8 @@ def alta_prestamista(nuevo_prestamista_address):
     socio_principal_private_key = '0x29905172112b6c394d3de1aa4823ea3dcb58ba86a9989362744e848dfe940ad1'
     transaction = contract.functions.altaPrestamista(nuevo_prestamista_address).build_transaction({
         'from': web3.eth.accounts[0],
-        'gas': 3000000,
-        'gasPrice': web3.to_wei('1', 'gwei'),
+        'gas': 2000000,
+        'gasPrice': web3.to_wei('50', 'gwei'),
         'nonce': web3.eth.get_transaction_count(web3.eth.accounts[0]),
     })
     tx_hash = sign_and_send_raw_tx(transaction, socio_principal_private_key)
@@ -32,8 +32,8 @@ def alta_cliente(nuevo_cliente_address, prestamista_address, prestamista_private
 
     transaction = contract.functions.altaCliente(nuevo_cliente_address).build_transaction({
         'from': prestamista_address,
-        'gas': 3000000,
-        'gasPrice': web3.to_wei('1', 'gwei'),
+        'gas': 2000000,
+        'gasPrice': web3.to_wei('50', 'gwei'),
         'nonce': web3.eth.get_transaction_count(prestamista_address),
     })
     tx_hash = sign_and_send_raw_tx(transaction, prestamista_private_key)
@@ -45,8 +45,8 @@ def depositar_garantia(direccion_cliente, valor, clave_privada_cliente):
 
     transaction = contract.functions.depositarGarantia().build_transaction({
         'from': direccion_cliente,
-        'gas': 3000000,
-        'gasPrice': web3.to_wei('1', 'gwei'),
+        'gas': 2000000,
+        'gasPrice': web3.to_wei('50', 'gwei'),
         'value': valor,
         'nonce': web3.eth.get_transaction_count(direccion_cliente),
     })
@@ -57,19 +57,21 @@ def depositar_garantia(direccion_cliente, valor, clave_privada_cliente):
 def solicitar_prestamo(direccion_cliente, monto, plazo, clave_privada_cliente):
     transaction = contract.functions.solicitarPrestamo(int(monto), int(plazo)).build_transaction({
         'from': direccion_cliente,
-        'gas': 3000000,
-        'gasPrice': web3.to_wei('1', 'gwei'),
+        'gas': 2000000,
+        'gasPrice': web3.to_wei('50', 'gwei'),
         'nonce': web3.eth.get_transaction_count(direccion_cliente),
     })
     tx_hash = sign_and_send_raw_tx(transaction, clave_privada_cliente)
     receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
     print("Transacción completada:", receipt)
+    prestamo_id = contract.functions.solicitarPrestamo(int(monto), int(plazo)).call()
+    print("ID Prestamo", prestamo_id)
 
 def aprobar_prestamo(prestatario_address, prestamo_id, prestamista_address, prestamista_private_key):
     transaction = contract.functions.aprobarPrestamo(prestatario_address, int(prestamo_id)).build_transaction({
         'from': prestamista_address,
-        'gas': 3000000,
-        'gasPrice': web3.to_wei('1', 'gwei'),
+        'gas': 2000000,
+        'gasPrice': web3.to_wei('50', 'gwei'),
         'nonce': web3.eth.get_transaction_count(prestamista_address),
     })
     tx_hash = sign_and_send_raw_tx(transaction, prestamista_private_key)
@@ -79,8 +81,8 @@ def aprobar_prestamo(prestatario_address, prestamo_id, prestamista_address, pres
 def reembolsar_prestamo(prestamo_id, cliente_address, cliente_private_key):
     transaction = contract.functions.reembolsarPrestamo(int(prestamo_id)).build_transaction({
         'from': cliente_address,
-        'gas': 3000000,
-        'gasPrice': web3.to_wei('1', 'gwei'),
+        'gas': 2000000,
+        'gasPrice': web3.to_wei('50', 'gwei'),
         'nonce': web3.eth.get_transaction_count(cliente_address),
     })
 
@@ -92,8 +94,8 @@ def reembolsar_prestamo(prestamo_id, cliente_address, cliente_private_key):
 def liquidar_garantia(prestamo_id, prestamista_address, prestamista_private_key):
     transaction = contract.functions.liquidarGarantia(int(prestamo_id)).build_transaction({
         'from': prestamista_address,
-        'gas': 3000000,
-        'gasPrice': web3.to_wei('1', 'gwei'),
+        'gas': 2000000,
+        'gasPrice': web3.to_wei('50', 'gwei'),
         'nonce': web3.eth.get_transaction_count(prestamista_address),
     })
     tx_hash = sign_and_send_raw_tx(transaction, prestamista_private_key)
