@@ -68,15 +68,29 @@ def solicitar_prestamo(direccion_cliente, monto, plazo, clave_privada_cliente):
     print("ID Prestamo", prestamo_id)
 
 def aprobar_prestamo(prestatario_address, prestamo_id, prestamista_address, prestamista_private_key):
-    transaction = contract.functions.aprobarPrestamo(prestatario_address, int(prestamo_id)).build_transaction({
-        'from': prestamista_address,
-        'gas': 2000000,
-        'gasPrice': web3.to_wei('50', 'gwei'),
-        'nonce': web3.eth.get_transaction_count(prestamista_address),
-    })
-    tx_hash = sign_and_send_raw_tx(transaction, prestamista_private_key)
-    receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
-    print("Transacción completada:", receipt)
+  try:
+      prestamo_id_int = int(prestamo_id)
+
+ 
+        nonce = w3.eth.get_transaction_count(prestamista_address)
+      txn_dict = contract.functions.aprobarPrestamo(prestatario_address, prestamo_id_int).build_transaction({
+          'from': prestamista_address,
+          'chainId': 1337,
+          'gas': 2000000,
+          'gasPrice': w3.to_wei('50', 'gwei'),
+          'nonce': nonce,
+      })
+
+        txn_receipt = enviar_transaccion(w3, txn_dict, prestamista_private_key)
+      if txn_receipt.status == 1:
+          return "Préstamo aprobado exitosamente."
+      else:
+          return "La transacción de aprobación falló."
+
+ 
+    except Exception as e:
+      return str(e)  # Devolver el mensaje de error
+ 
 
 def reembolsar_prestamo(prestamo_id, cliente_address, cliente_private_key):
     transaction = contract.functions.reembolsarPrestamo(int(prestamo_id)).build_transaction({
